@@ -12,5 +12,8 @@
     "big-integer": "^1.6.48",
     "sha1": "^1.1.1",
     "ws": "^7.4.3"
+  },
+  "devDependencies": {
+    "prettier": "^2.2.1"
   }
 }
