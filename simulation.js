@@ -1,0 +1,43 @@
+const app = require('./app');
+const fs = require('fs');
+
+// empties the log file content.
+fs.truncate('./logs/app.log', 0, () => {});
+
+const simulation = () => {
+    return new Promise(async (resolve, reject) => {
+        const hrstart = process.hrtime();
+
+        await app.call(null, {
+            ip: '127.0.0.1',
+            port: 3000,
+            action: 'create',
+            params: {}
+        });
+
+        let ipAddress, port;
+        for (let i = 49152; i < 50000; i++) {
+            ipAddress = `127.0.0.2`;
+            port = i;
+            // console.log(ipAddress, port);
+            await app.call(null, {
+                ip: ipAddress,
+                port: port,
+                action: 'join',
+                params: {
+                    ip: '127.0.0.1',
+                    port: 3000
+                }
+            });
+        }
+
+        const hrend = process.hrtime(hrstart);
+        console.log(`Execution Time: ${hrend[0]}s ${hrend[1] / 1000000}ms`);
+
+        resolve();
+    });
+};
+
+// simulation();
+
+module.exports = simulation;

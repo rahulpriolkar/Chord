@@ -1,11 +1,22 @@
 const Node = require('./models/node');
+const display = require('./utils/display');
 
-const app = function (message) {
-    const nodeObj = new Node(message.ip, message.port);
+const app = (message) => {
+    return new Promise(async (resolve, reject) => {
+        const nodeObj = new Node(message.ip, message.port);
 
-    for (method of message.methods) {
-        nodeObj[method.name](method.params);
-    }
+        nodeObj.startServer();
+
+        if (message.action == 'create') {
+            nodeObj.create();
+            resolve(nodeObj);
+        } else if (message.action == 'join') {
+            await nodeObj.join(message.params);
+            resolve(nodeObj);
+        }
+
+        // display(nodeObj, 5 * 1000);
+    });
 };
 
 module.exports = app;
