@@ -1,5 +1,5 @@
 const computeNodeId = require('../utils/computeNodeId');
-const logger = require('/home/rahul/Documents/Chord/config/winston');
+const logger = require('../config/winston');
 
 const join = function ({ ip, port, nodeId = computeNodeId({ ip, port }) }) {
     return new Promise((resolve, reject) => {
@@ -10,17 +10,16 @@ const join = function ({ ip, port, nodeId = computeNodeId({ ip, port }) }) {
             type: 'find-successor',
             params: {
                 startNode: this.getNodeInfo(),
-                id: this.NODE_ID
+                id: this.NODE_ID,
+                hopCount: 0
             }
         });
 
-        this.receive({ type: 'find-successor-response' }).then(({ successor, predecessor }) => {
+        this.receive({ type: 'find-successor-response' }).then(({ successor, predecessor, hopCount }) => {
+            // console.log(hopCount);
             this.successor = successor;
             this.predecessor = predecessor;
-            logger.log(
-                'info',
-                `[${this.IP_ADDRESS}:${this.PORT}]-[Received sucessor response!] ${JSON.stringify(this.successor)}`
-            );
+            logger.log('info', `[${this.IP_ADDRESS}:${this.PORT}]-[Received sucessor response!] ${JSON.stringify(this.successor)}`);
             resolve();
         });
     });

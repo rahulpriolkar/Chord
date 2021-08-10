@@ -1,6 +1,6 @@
 const bigInt = require('big-integer');
 
-const findSuccessor = function ({ startNode, id }) {
+const findSuccessor = function ({ startNode, id, hopCount }) {
     id = bigInt(id);
 
     const isLastNode = bigInt(this.NODE_ID).gt(bigInt(this.successor.nodeId));
@@ -9,16 +9,19 @@ const findSuccessor = function ({ startNode, id }) {
     let successorCondition = isLastNode
         ? id.gt(bigInt(this.NODE_ID)) || id.leq(bigInt(this.successor.nodeId))
         : id.gt(bigInt(this.NODE_ID)) && id.leq(bigInt(this.successor.nodeId));
+
     // special case for only one node in the network.
     if (isOnlyNode) successorCondition = true;
 
+    hopCount++;
     if (successorCondition) {
         this.send({
             nextNode: startNode,
             type: 'find-successor-response',
             params: {
                 successor: this.successor,
-                predecessor: this.getNodeInfo()
+                predecessor: this.getNodeInfo(),
+                hopCount
             }
         });
         this.successor = startNode;
@@ -32,7 +35,8 @@ const findSuccessor = function ({ startNode, id }) {
             type: 'find-successor',
             params: {
                 startNode,
-                id
+                id,
+                hopCount
             }
         });
     }

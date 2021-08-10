@@ -5,9 +5,11 @@ const networkStabilityHandler = (node, params) => {
     const isCurrentNode = bigInt(node.NODE_ID).compare(bigInt(params.startNode.nodeId));
 
     if (isCurrentNode == 0) {
-        if (params.sStable) {
+        if (params.isStable) {
             // Checking the successor condition for the startNode, after a round trip around the network
-            if (bigInt(node.NODE_ID).compare(bigInt(node.successor.nodeId)) != -1) {
+            const condition1 = params.networkViolationCount == 0 && bigInt(node.NODE_ID).compare(bigInt(node.successor.nodeId)) == 1;
+            const condition2 = params.networkViolationCount == 1 && bigInt(node.NODE_ID).compare(bigInt(node.successor.nodeId)) == -1;
+            if (!condition1 && !condition2) {
                 params.isStable = false;
             }
         }
