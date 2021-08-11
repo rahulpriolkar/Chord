@@ -4,6 +4,7 @@ const receive = function ({ type }) {
             ws.on('message', (message) => {
                 message = JSON.parse(message);
                 if (message.type == type) {
+                    ws.close();
                     resolve(message.params);
                 }
             });

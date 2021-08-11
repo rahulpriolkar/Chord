@@ -13,6 +13,7 @@ const startServer = function () {
             } else if (message.type == 'network-stability') {
                 networkStabilityHandler(this, message.params);
             }
+            ws.close();
         });
     });
 };

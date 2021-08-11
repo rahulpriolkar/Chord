@@ -10,6 +10,10 @@ const send = function ({ nextNode, type, params }) {
             })
         );
     });
+
+    // ws.on('close', () => {
+    //     console.log('connection closed!');
+    // });
 };
 
 module.exports = send;

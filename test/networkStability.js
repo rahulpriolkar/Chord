@@ -1,4 +1,5 @@
 const expect = require('chai').expect;
+const logger = require('../config/winston');
 const app = require('../app');
 const simulation = require('../simulation');
 
@@ -8,6 +9,7 @@ describe('Network Stability', () => {
             this.timeout(0); // disabling mocha timeout
 
             await simulation();
+            logger.log('info', 'Simulation Done!');
 
             const testNode = await app.call(null, {
                 ip: '127.0.0.1',
@@ -18,6 +20,8 @@ describe('Network Stability', () => {
                     port: 3000
                 }
             });
+
+            // const hrstart = process.hrtime();
 
             testNode.send({
                 nextNode: testNode.successor,
@@ -30,6 +34,10 @@ describe('Network Stability', () => {
             });
 
             const { isStable } = await testNode.receive({ type: 'network-stability-response' });
+
+            // const hrend = process.hrtime(hrstart);
+            // console.log(`Execution Time: ${hrend[0]}s ${hrend[1] / 1000000}ms`);
+
             expect(isStable).is.eql(true);
         });
     });

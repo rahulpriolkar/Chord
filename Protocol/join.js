@@ -5,6 +5,8 @@ const join = function ({ ip, port, nodeId = computeNodeId({ ip, port }) }) {
     return new Promise((resolve, reject) => {
         this.predecessor = null;
 
+        // const hrstart = process.hrtime();
+
         this.send({
             nextNode: { ip, port, nodeId },
             type: 'find-successor',
@@ -20,6 +22,10 @@ const join = function ({ ip, port, nodeId = computeNodeId({ ip, port }) }) {
             this.successor = successor;
             this.predecessor = predecessor;
             logger.log('info', `[${this.IP_ADDRESS}:${this.PORT}]-[Received sucessor response!] ${JSON.stringify(this.successor)}`);
+
+            // const hrend = process.hrtime(hrstart);
+            // console.log(`Execution Time: ${hrend[0]}s ${hrend[1] / 1000000}ms [${hopCount}]`);
+
             resolve();
         });
     });

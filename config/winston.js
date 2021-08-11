@@ -9,7 +9,7 @@ const myFormat = printf(({ level, message, timestamp }) => {
 const options = {
     file: {
         level: 'silly',
-        filename: '/home/rahul/Documents/Chord/logs/app.log',
+        filename: '/mnt/c/Users/priol/rahulpriolkar/Documents/Projects/Chord/logs/app.log',
         handleExceptions: true,
         json: true,
         maxsize: 5242880, // 5MB
