@@ -1,6 +1,7 @@
 const WebSocket = require('ws');
 const findSuccessorHandler = require('../RequestHandlers/findSuccessorHandler');
 const networkStabilityHandler = require('../RequestHandlers/networkStabilityHandler');
+const pingHandler = require('../RequestHandlers/pingHandler');
 
 const startServer = function () {
     this.WSS = new WebSocket.Server({ host: this.IP_ADDRESS, port: this.PORT });
@@ -12,6 +13,8 @@ const startServer = function () {
                 findSuccessorHandler(this, message.params);
             } else if (message.type == 'network-stability') {
                 networkStabilityHandler(this, message.params);
+            } else if (message.type == 'ping') {
+                pingHandler(ws);
             }
             ws.close();
         });
