@@ -3,6 +3,7 @@ const findSuccessorHandler = require('../RequestHandlers/findSuccessorHandler');
 const predecessorAlertHandler = require('../RequestHandlers/predecessorAlertHandler');
 const predecessorStabiityHandler = require('../RequestHandlers/predecessorStabilityHandler');
 const successorStabilityHandler = require('../RequestHandlers/successorStabilityHandler');
+const pingHandler = require('../RequestHandlers/pingHandler');
 
 const startServer = function () {
     this.WSS = new WebSocket.Server({ host: this.IP_ADDRESS, port: this.PORT });
@@ -18,6 +19,8 @@ const startServer = function () {
                 successorStabilityHandler(this, message.params);
             } else if (message.type == 'predecessor-stability') {
                 predecessorStabiityHandler(this, message.params);
+            } else if (message.type == 'ping') {
+                pingHandler(ws);
             }
             ws.close();
         });
