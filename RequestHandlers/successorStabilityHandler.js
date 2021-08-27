@@ -1,10 +1,10 @@
 const bigInt = require('big-integer');
-const logger = require('../config/winston');
+// const logger = require('../config/winston');
 
-const networkStabilityHandler = (node, params) => {
-    const isCurrentNode = bigInt(node.NODE_ID).compare(bigInt(params.startNode.nodeId));
+const successorStabilityHandler = (node, params) => {
+    const isStartNode = bigInt(node.NODE_ID).compare(bigInt(params.startNode.nodeId)) == 0;
 
-    if (isCurrentNode == 0) {
+    if (isStartNode) {
         if (params.isStable) {
             // Checking the successor condition for the startNode, after a round trip around the network
             const condition1 = params.networkViolationCount == 0 && bigInt(node.NODE_ID).compare(bigInt(node.successor.nodeId)) == 1;
@@ -15,14 +15,14 @@ const networkStabilityHandler = (node, params) => {
         }
         node.send({
             nextNode: params.startNode,
-            type: 'network-stability-response',
+            type: 'successor-stability-response',
             params: params
         });
     } else {
         if (bigInt(node.NODE_ID).compare(bigInt(node.successor.nodeId)) === -1) {
             node.send({
                 nextNode: node.successor,
-                type: 'network-stability',
+                type: 'successor-stability',
                 params: params
             });
         } else if (params.networkViolationCount == 0) {
@@ -30,7 +30,7 @@ const networkStabilityHandler = (node, params) => {
             params.networkViolationCount++;
             node.send({
                 nextNode: node.successor,
-                type: 'network-stability',
+                type: 'successor-stability',
                 params: params
             });
         } else {
@@ -38,11 +38,11 @@ const networkStabilityHandler = (node, params) => {
             params.isStable = false;
             node.send({
                 nextNode: params.startNode,
-                type: 'network-stability',
+                type: 'successor-stability',
                 params: params
             });
         }
     }
 };
 
-module.exports = networkStabilityHandler;
+module.exports = successorStabilityHandler;

@@ -24,7 +24,17 @@ const findSuccessor = function ({ startNode, id, hopCount }) {
                 hopCount
             }
         });
+
+        this.send({
+            nextNode: this.successor,
+            type: 'predecessor-alert',
+            params: {
+                predecessor: startNode
+            }
+        });
+
         this.successor = startNode;
+
         if (this.predecessor == null) this.predecessor = startNode; // WARNING TEST THIS LINE
     } else {
         // The line below to be replaced with O(log n) look-up equivalent.

@@ -2,41 +2,42 @@ const expect = require('chai').expect;
 const logger = require('../config/winston');
 const app = require('../app');
 const simulation = require('../simulation');
+const succcessorStability = require('./successorStabilty');
+const predecessorStability = require('./predecessorStability');
 
 describe('Network Stability', () => {
+    let testNode;
+
+    it('Simulating a network', async function () {
+        this.timeout(0);
+
+        await simulation();
+        logger.log('info', 'Simulation Done!');
+
+        testNode = await app.call(null, {
+            ip: '127.0.0.1',
+            port: 3001,
+            action: 'join',
+            params: {
+                ip: '127.0.0.2',
+                port: 49153
+            }
+        });
+    });
+
     describe('Routing Table Stability', () => {
         it('should return true if all the nodes have successors with node IDs properly aligned', async function () {
             this.timeout(0); // disabling mocha timeout
 
-            await simulation();
-            logger.log('info', 'Simulation Done!');
+            const isStable = await succcessorStability(testNode);
 
-            const testNode = await app.call(null, {
-                ip: '127.0.0.1',
-                port: 3001,
-                action: 'join',
-                params: {
-                    ip: '127.0.0.1',
-                    port: 3000
-                }
-            });
+            expect(isStable).is.eql(true);
+        });
 
-            // const hrstart = process.hrtime();
+        it('should return true if all the nodes have predecessors with node IDs properly aligned', async function () {
+            this.timeout(0); // disabling mocha timeout
 
-            testNode.send({
-                nextNode: testNode.successor,
-                type: 'network-stability',
-                params: {
-                    startNode: testNode.getNodeInfo(),
-                    isStable: true,
-                    networkViolationCount: 0 // Come up with a better variable name
-                }
-            });
-
-            const { isStable } = await testNode.receive({ type: 'network-stability-response' });
-
-            // const hrend = process.hrtime(hrstart);
-            // console.log(`Execution Time: ${hrend[0]}s ${hrend[1] / 1000000}ms`);
+            const isStable = await predecessorStability(testNode);
 
             expect(isStable).is.eql(true);
         });

@@ -21,7 +21,10 @@ const join = function ({ ip, port, nodeId = computeNodeId({ ip, port }) }) {
             // console.log(hopCount);
             this.successor = successor;
             this.predecessor = predecessor;
-            logger.log('info', `[${this.IP_ADDRESS}:${this.PORT}]-[Received sucessor response!] ${JSON.stringify(this.successor)}`);
+            logger.log(
+                'info',
+                `[${this.IP_ADDRESS}:${this.PORT}]-[Received sucessor response!] successor:[${this.successor.port}] predecessor: [${this.predecessor.port}]`
+            );
 
             // const hrend = process.hrtime(hrstart);
             // console.log(`Execution Time: ${hrend[0]}s ${hrend[1] / 1000000}ms [${hopCount}]`);
