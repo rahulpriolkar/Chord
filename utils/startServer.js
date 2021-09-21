@@ -4,6 +4,7 @@ const predecessorAlertHandler = require('../RequestHandlers/predecessorAlertHand
 const predecessorStabiityHandler = require('../RequestHandlers/predecessorStabilityHandler');
 const successorStabilityHandler = require('../RequestHandlers/successorStabilityHandler');
 const pingHandler = require('../RequestHandlers/pingHandler');
+const pingScheduler = require('../Schedulers/pingScheduler');
 
 const startServer = function () {
     this.WSS = new WebSocket.Server({ host: this.IP_ADDRESS, port: this.PORT });
@@ -25,6 +26,9 @@ const startServer = function () {
             ws.close();
         });
     });
+
+    pingScheduler(this, { isArray: false, target: 'predecessor', targetIndex: -1, timeout: 30 });
+    pingScheduler(this, { isArray: false, target: 'successor', targetIndex: -1, timeout: 30 });
 };
 
 module.exports = startServer;
