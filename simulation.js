@@ -17,7 +17,7 @@ const simulation = () => {
         });
 
         let ipAddress, port;
-        for (let i = 49152; i < 49356; i++) {
+        for (let i = 49152; i < 49153; i++) {
             ipAddress = `127.0.0.2`;
             port = i;
 
@@ -25,6 +25,8 @@ const simulation = () => {
             const isFree = await isPortFree(i);
             // console.log(`${i}, ${isFree}`);
             if (!isFree) continue;
+
+            console.log('[Simulation]', i);
 
             await app.call(null, {
                 ip: ipAddress,
@@ -44,11 +46,10 @@ const simulation = () => {
     });
 };
 
-// simulation();
-// (async () => {
-//     console.log('Start');
-//     await simulation();
-//     console.log('End');
-// })();
+(async () => {
+    console.log('Start');
+    await simulation();
+    console.log('End');
+})();
 
 module.exports = simulation;

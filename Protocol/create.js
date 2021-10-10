@@ -1,5 +1,5 @@
 const create = function () {
-    this.predecessor = null;
+    this.predecessor = this.getNodeInfo();
     this.successor = this.getNodeInfo();
 };
 

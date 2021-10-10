@@ -13,6 +13,8 @@ const findSuccessor = function ({ startNode, id, hopCount }) {
     // special case for only one node in the network.
     if (isOnlyNode) successorCondition = true;
 
+    console.log(successorCondition);
+
     hopCount++;
     if (successorCondition) {
         this.send({
@@ -20,22 +22,9 @@ const findSuccessor = function ({ startNode, id, hopCount }) {
             type: 'find-successor-response',
             params: {
                 successor: this.successor,
-                predecessor: this.getNodeInfo(),
                 hopCount
             }
         });
-
-        this.send({
-            nextNode: this.successor,
-            type: 'predecessor-alert',
-            params: {
-                predecessor: startNode
-            }
-        });
-
-        this.successor = startNode;
-
-        if (this.predecessor == null) this.predecessor = startNode; // WARNING TEST THIS LINE
     } else {
         // The line below to be replaced with O(log n) look-up equivalent.
         const nextNode = this.successor;
