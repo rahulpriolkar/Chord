@@ -7,6 +7,8 @@ const successorStabilityHandler = require('../RequestHandlers/successorStability
 const pingHandler = require('../RequestHandlers/pingHandler');
 const fixFingersScheduler = require('../Schedulers/fixFingersScheduler');
 const logger = require('../config/winston');
+const findSuccessorResponseHandler = require('../RequestHandlers/findSuccessorResponseHandler');
+const stabilizeResponseHandler = require('../RequestHandlers/stabilizeResponseHandler');
 
 const startServer = function () {
     let count = 0;
@@ -18,7 +20,6 @@ const startServer = function () {
             message = JSON.parse(message);
             console.log(this.PORT, message.type);
             if (message.type == 'find-successor') {
-                // if (this.PORT == 3000) logger.log('info', `${this.PORT}, ${message.params}`);
                 findSuccessorHandler(this, message.params);
             } else if (message.type == 'stabilize') {
                 stabilizeHandler(this, message.params);
@@ -30,6 +31,10 @@ const startServer = function () {
                 predecessorStabiityHandler(this, message.params);
             } else if (message.type == 'ping') {
                 pingHandler(ws);
+            } else if (message.type == 'find-successor-response') {
+                findSuccessorResponseHandler(this, message.params);
+            } else if (message.type == 'stabilize-response') {
+                stabilizeResponseHandler(this, message.params);
             }
             ws.close();
         });

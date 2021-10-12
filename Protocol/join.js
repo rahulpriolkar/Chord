@@ -14,8 +14,7 @@ const join = function ({ ip, port, nodeId = computeNodeId({ ip, port }) }) {
             }
         });
 
-        this.receive({ type: 'find-successor-response' }).then(({ successor }) => {
-            this.successor = successor;
+        this.ee.once('find-successor-response', () => {
             resolve();
         });
     });

@@ -17,7 +17,7 @@ const simulation = () => {
         });
 
         let ipAddress, port;
-        for (let i = 49152; i < 49153; i++) {
+        for (let i = 49152; i < 49154; i++) {
             ipAddress = `127.0.0.2`;
             port = i;
 

@@ -14,8 +14,6 @@ const app = (message) => {
             await nodeObj.join(message.params);
             resolve(nodeObj);
         }
-
-        // display(nodeObj, 5 * 1000);
     });
 };
 

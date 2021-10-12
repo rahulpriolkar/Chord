@@ -10,6 +10,8 @@ const fixFingers = require('../Protocol/fixFingers');
 const stabilize = require('../Protocol/stabilize');
 const notify = require('../Protocol/notify');
 
+const { EventEmitter } = require('events').EventEmitter;
+
 const Node = class {
     constructor(IP_ADDRESS = '127.0.0.1', PORT = 3000) {
         this.IP_ADDRESS = IP_ADDRESS;
@@ -20,6 +22,7 @@ const Node = class {
         this.fingerTable = [];
         this.fingerIndex = 0;
         this.FINGER_TABLE_SIZE = 10;
+        this.ee = new EventEmitter();
     }
 
     getNodeInfo = getNodeInfo;

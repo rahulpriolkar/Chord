@@ -13,17 +13,15 @@ const findSuccessor = function ({ startNode, id, hopCount }) {
     // special case for only one node in the network.
     if (isOnlyNode) successorCondition = true;
 
-    console.log(successorCondition);
-
     hopCount++;
     if (successorCondition) {
+        let params = { successor: this.successor, hopCount };
+        if (isOnlyNode) this.successor = startNode; // special case, when the 2nd node joins the network
+
         this.send({
             nextNode: startNode,
             type: 'find-successor-response',
-            params: {
-                successor: this.successor,
-                hopCount
-            }
+            params
         });
     } else {
         // The line below to be replaced with O(log n) look-up equivalent.
