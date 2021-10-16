@@ -6,11 +6,13 @@ const succcessorStability = (testNode) => {
             params: {
                 startNode: testNode.getNodeInfo(),
                 isStable: true,
+                hopCount: 0,
                 networkViolationCount: 0 // Come up with a better variable name
             }
         });
 
-        testNode.ee.once('successor-stability-response', (isStable) => {
+        testNode.ee.once('successor-stability-response', (isStable, hopCount) => {
+            console.log('Hop Count', hopCount);
             resolve(isStable);
         });
     });

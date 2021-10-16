@@ -2,6 +2,8 @@ const bigInt = require('big-integer');
 // const logger = require('../config/winston');
 
 const successorStabilityHandler = (node, params) => {
+    params.hopCount++;
+
     const isStartNode = bigInt(node.NODE_ID).compare(bigInt(params.startNode.nodeId)) == 0;
 
     if (isStartNode) {
