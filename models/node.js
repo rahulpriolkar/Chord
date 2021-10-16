@@ -1,5 +1,4 @@
 const send = require('../utils/send');
-const receive = require('../utils/receive');
 const getNodeInfo = require('../utils/getNodeInfo');
 const computeNodeId = require('../utils/computeNodeId');
 const startServer = require('../utils/startServer');
@@ -27,7 +26,6 @@ const Node = class {
 
     getNodeInfo = getNodeInfo;
     send = send;
-    receive = receive;
     startServer = startServer;
     findSuccessor = findSuccessor;
     create = create;
