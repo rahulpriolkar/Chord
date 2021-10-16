@@ -3,18 +3,21 @@ const bigInt = require('big-integer');
 const stabilizeResponseHandler = function (node, params) {
     const predecessor = params.predecessor;
 
-    const successorCondition =
-        predecessor && bigInt(predecessor.nodeId).gt(bigInt(node.NODE_ID)) && bigInt(predecessor.nodeId).lt(bigInt(node.successor.nodeId));
+    const isLastNode = node.successor && bigInt(node.NODE_ID).gt(bigInt(node.successor.nodeId));
+
+    const condition1 = predecessor && bigInt(predecessor.nodeId).gt(bigInt(node.NODE_ID));
+    const condition2 = predecessor && bigInt(predecessor.nodeId).lt(bigInt(node.successor.nodeId));
+    const successorCondition = isLastNode ? condition1 || condition2 : condition1 && condition2;
 
     if (successorCondition) node.successor = predecessor;
 
     node.send({
-        nextNode: { ip: node.successor.ip, port: node.successor.port, nodeId: node.successor.nodeId },
+        nextNode: node.successor,
         type: 'notify',
         params: { predecessor: node.getNodeInfo() }
     });
 
-    this.ee.emit('stablize-response');
+    node.ee.emit('stabilize-response');
 };
 
 module.exports = stabilizeResponseHandler;

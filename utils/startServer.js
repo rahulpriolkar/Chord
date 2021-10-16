@@ -9,46 +9,75 @@ const fixFingersScheduler = require('../Schedulers/fixFingersScheduler');
 const logger = require('../config/winston');
 const findSuccessorResponseHandler = require('../RequestHandlers/findSuccessorResponseHandler');
 const stabilizeResponseHandler = require('../RequestHandlers/stabilizeResponseHandler');
+const predecessorStabilityResponseHandler = require('../RequestHandlers/predecessorStabilityResponseHandler');
+const successorStabilityResponseHandler = require('../RequestHandlers/successorStabilityResponseHandler');
 
 const startServer = function () {
-    let count = 0;
     this.WSS = new WebSocket.Server({ host: this.IP_ADDRESS, port: this.PORT });
 
     this.WSS.on('connection', (ws, req) => {
-        // count++;
         ws.on('message', (message) => {
             message = JSON.parse(message);
-            console.log(this.PORT, message.type);
-            if (message.type == 'find-successor') {
-                findSuccessorHandler(this, message.params);
-            } else if (message.type == 'stabilize') {
-                stabilizeHandler(this, message.params);
-            } else if (message.type == 'notify') {
-                notifyHandler(this, message.params);
-            } else if (message.type == 'successor-stability') {
-                successorStabilityHandler(this, message.params);
-            } else if (message.type == 'predecessor-stability') {
-                predecessorStabiityHandler(this, message.params);
-            } else if (message.type == 'ping') {
-                pingHandler(ws);
-            } else if (message.type == 'find-successor-response') {
-                findSuccessorResponseHandler(this, message.params);
-            } else if (message.type == 'stabilize-response') {
-                stabilizeResponseHandler(this, message.params);
+
+            // console.log(this.PORT, message.type);
+
+            const { type, params } = message;
+            // console.log(type, params);
+
+            switch (type) {
+                case 'find-successor':
+                    findSuccessorHandler(this, params);
+                    break;
+
+                case 'find-successor-response':
+                    findSuccessorResponseHandler(this, params);
+                    break;
+
+                case 'stabilize':
+                    stabilizeHandler(this, params);
+                    break;
+
+                case 'stabilize-response':
+                    stabilizeResponseHandler(this, params);
+                    break;
+
+                case 'notify':
+                    notifyHandler(this, params);
+                    break;
+
+                case 'successor-stability':
+                    successorStabilityHandler(this, params);
+                    break;
+
+                case 'successor-stability-response':
+                    successorStabilityResponseHandler(this, params);
+                    break;
+
+                case 'predecessor-stability':
+                    predecessorStabiityHandler(this, params);
+                    break;
+
+                case 'predecessor-stability-response':
+                    predecessorStabilityResponseHandler(this, params);
+                    break;
+
+                case 'ping':
+                    pingHandler(ws);
+                    break;
+
+                default:
+                    console.log('Invalid Request!');
             }
             ws.close();
         });
     });
 
     setInterval(async () => {
-        // logger.log('info', `${this.PORT} ${this.successor.port}`);
-        // count++;
-        console.log('ITERATION\n');
-        console.log(count, this.PORT, this.getNodeInfo(), this.successor, this.predecessor, 'END\n');
+        const s = this.successor ? this.successor.port : null;
+        const p = this.predecessor ? this.predecessor.port : null;
+        console.log(this.PORT, s, p, 'END');
         await this.stabilize();
-        // if (this.PORT == 3000) await this.fixFingers();
-        // fixFingersScheduler(this, 10);
-    }, 5 * 1000);
+    }, 3 * 1000);
 };
 
 module.exports = startServer;

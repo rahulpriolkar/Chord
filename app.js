@@ -1,5 +1,4 @@
 const Node = require('./models/node');
-const display = require('./utils/display');
 
 const app = (message) => {
     return new Promise(async (resolve, reject) => {

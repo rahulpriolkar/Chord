@@ -6,14 +6,12 @@ const stabilize = function () {
 
         if (stabilizeCondition) {
             this.send({
-                nextNode: { ip: this.successor.ip, port: this.successor.port, nodeId: this.successor.nodeId },
+                nextNode: this.successor,
                 type: 'stabilize',
                 params: { startNode: this.getNodeInfo() }
             });
 
-            this.ee.on('find-successor-response', () => {
-                resolve();
-            });
+            this.ee.once('stabilize-response', resolve);
         } else {
             resolve();
         }

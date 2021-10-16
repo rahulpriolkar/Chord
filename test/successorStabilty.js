@@ -10,9 +10,9 @@ const succcessorStability = (testNode) => {
             }
         });
 
-        const { isStable } = await testNode.receive({ type: 'successor-stability-response' });
-
-        resolve(isStable);
+        testNode.ee.once('successor-stability-response', (isStable) => {
+            resolve(isStable);
+        });
     });
 };
 

@@ -9,6 +9,7 @@ const simulation = () => {
     return new Promise(async (resolve, reject) => {
         const hrstart = process.hrtime();
 
+        console.log('Creating the network');
         await app.call(null, {
             ip: '127.0.0.1',
             port: 3000,
@@ -16,17 +17,20 @@ const simulation = () => {
             params: {}
         });
 
-        let ipAddress, port;
-        for (let i = 49152; i < 49154; i++) {
-            ipAddress = `127.0.0.2`;
-            port = i;
+        let ports = [];
+        for (let i = 49152; i < 49226; i++) {
+            ports.push(i);
+        }
+        // randomzing the join sequence
+        ports = ports.sort((a, b) => 0.5 - Math.random());
 
+        console.log(ports);
+
+        let ipAddress = '127.0.0.2';
+        for (const port of ports) {
             // skip if the port is not free
-            const isFree = await isPortFree(i);
-            // console.log(`${i}, ${isFree}`);
+            const isFree = await isPortFree(port);
             if (!isFree) continue;
-
-            console.log('[Simulation]', i);
 
             await app.call(null, {
                 ip: ipAddress,
@@ -47,9 +51,9 @@ const simulation = () => {
 };
 
 (async () => {
-    console.log('Start');
+    console.log('Start Simulation');
     await simulation();
-    console.log('End');
+    console.log('End Simulation');
 })();
 
 module.exports = simulation;
