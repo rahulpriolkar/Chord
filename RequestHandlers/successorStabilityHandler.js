@@ -1,8 +1,10 @@
 const bigInt = require('big-integer');
-// const logger = require('../config/winston');
+const fs = require('fs');
 
 const successorStabilityHandler = (node, params) => {
     params.hopCount++;
+
+    fs.appendFileSync('/mnt/c/Users/priol/rahulpriolkar/Documents/Projects/Chord/logs/netMap.txt', `${node.PORT} (${node.NODE_ID})\n`);
 
     const isStartNode = bigInt(node.NODE_ID).compare(bigInt(params.startNode.nodeId)) == 0;
 

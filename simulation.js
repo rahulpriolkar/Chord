@@ -5,6 +5,9 @@ const fs = require('fs');
 // empties the log file content.
 fs.truncate('./logs/app.log', 0, () => {});
 
+// empties the netMap file content.
+fs.truncate('./logs/netMap.txt', 0, () => {});
+
 const simulation = () => {
     return new Promise(async (resolve, reject) => {
         const hrstart = process.hrtime();
@@ -18,7 +21,7 @@ const simulation = () => {
         });
 
         let ports = [];
-        for (let i = 49152; i < 49226; i++) {
+        for (let i = 49152; i < 49156; i++) {
             ports.push(i);
         }
         // randomzing the join sequence
