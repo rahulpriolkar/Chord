@@ -1,6 +1,6 @@
 const bigInt = require('big-integer');
 
-const findSuccessor = function ({ startNode, id, hopCount }) {
+const findSuccessor = function ({ startNode, id, hopCount, messageId }) {
     id = bigInt(id);
 
     const isLastNode = bigInt(this.NODE_ID).gt(bigInt(this.successor.nodeId));
@@ -15,7 +15,7 @@ const findSuccessor = function ({ startNode, id, hopCount }) {
 
     hopCount++;
     if (successorCondition) {
-        let params = { successor: this.successor, hopCount };
+        let params = { successor: this.successor, hopCount, messageId };
         if (isOnlyNode) this.successor = startNode; // special case, when the 2nd node joins the network
 
         this.send({
@@ -33,7 +33,8 @@ const findSuccessor = function ({ startNode, id, hopCount }) {
             params: {
                 startNode,
                 id,
-                hopCount
+                hopCount,
+                messageId
             }
         });
     }

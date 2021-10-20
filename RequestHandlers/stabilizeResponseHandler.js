@@ -17,7 +17,8 @@ const stabilizeResponseHandler = function (node, params) {
         params: { predecessor: node.getNodeInfo() }
     });
 
-    node.ee.emit('stabilize-response');
+    const event = `stabilize-response:${params.messageId}`;
+    node.ee.emit(event);
 };
 
 module.exports = stabilizeResponseHandler;

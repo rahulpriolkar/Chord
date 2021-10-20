@@ -1,16 +1,22 @@
+const sha1 = require('sha1');
+
 const predecesorStability = (testNode) => {
     return new Promise(async (resolve) => {
+        const messageId = sha1(Date.now());
+
         testNode.send({
             nextNode: testNode.successor,
             type: 'predecessor-stability',
             params: {
                 startNode: testNode.getNodeInfo(),
                 isStable: true,
-                previousNode: testNode.getNodeInfo()
+                previousNode: testNode.getNodeInfo(),
+                messageId
             }
         });
 
-        testNode.ee.once('predecessor-stability-response', (isStable) => {
+        const event = `predecessor-stability-response:${messageId}`;
+        testNode.ee.once(event, (isStable) => {
             resolve(isStable);
         });
     });
