@@ -15,12 +15,13 @@ const Node = class {
     constructor(IP_ADDRESS = '127.0.0.1', PORT = 3000) {
         this.IP_ADDRESS = IP_ADDRESS;
         this.PORT = PORT;
-        this.NODE_ID = computeNodeId({ ip: this.IP_ADDRESS, port: this.PORT });
-        this.predecessor = null;
-        this.successor = null;
         this.fingerTable = [];
         this.fingerIndex = 0;
         this.FINGER_TABLE_SIZE = 10;
+        this.NODE_ID = computeNodeId({ ip: this.IP_ADDRESS, port: this.PORT, m: this.FINGER_TABLE_SIZE });
+        console.log(this.PORT, this.NODE_ID);
+        this.predecessor = null;
+        this.successor = null;
         this.ee = new EventEmitter();
     }
 

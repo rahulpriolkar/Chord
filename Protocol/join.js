@@ -1,11 +1,13 @@
 const computeNodeId = require('../utils/computeNodeId');
 const sha1 = require('sha1');
 
-const join = function ({ ip, port, nodeId = computeNodeId({ ip, port }) }) {
+const join = function ({ ip, port }) {
     return new Promise((resolve, reject) => {
         this.predecessor = null;
 
         const messageId = sha1(Date.now());
+
+        const nodeId = computeNodeId({ ip, port, m: this.FINGER_TABLE_SIZE });
 
         this.send({
             nextNode: { ip, port, nodeId },

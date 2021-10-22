@@ -6,7 +6,6 @@ const predecessorStabiityHandler = require('../RequestHandlers/predecessorStabil
 const successorStabilityHandler = require('../RequestHandlers/successorStabilityHandler');
 const pingHandler = require('../RequestHandlers/pingHandler');
 const fixFingersScheduler = require('../Schedulers/fixFingersScheduler');
-const logger = require('../config/winston');
 const findSuccessorResponseHandler = require('../RequestHandlers/findSuccessorResponseHandler');
 const stabilizeResponseHandler = require('../RequestHandlers/stabilizeResponseHandler');
 const predecessorStabilityResponseHandler = require('../RequestHandlers/predecessorStabilityResponseHandler');
@@ -77,7 +76,9 @@ const startServer = function () {
         const p = this.predecessor ? this.predecessor.port : null;
         console.log(this.PORT, s, p, 'END');
         await this.stabilize();
-    }, 3 * 1000);
+    }, 5 * 1000);
+
+    fixFingersScheduler(this, 3);
 };
 
 module.exports = startServer;
