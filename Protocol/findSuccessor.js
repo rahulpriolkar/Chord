@@ -24,8 +24,11 @@ const findSuccessor = function ({ startNode, id, hopCount, messageId }) {
             params
         });
     } else {
-        // The line below to be replaced with O(log n) look-up equivalent.
-        const nextNode = this.successor;
+        // O(N)
+        // const nextNode = this.successor;
+
+        // O(log N)
+        const nextNode = this.closestPrecedingNode(id);
 
         this.send({
             nextNode,
