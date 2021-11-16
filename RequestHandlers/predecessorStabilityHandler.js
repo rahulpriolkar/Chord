@@ -4,8 +4,6 @@ const logger = require('../config/winston');
 const predecessorStabiityHandler = (node, params) => {
     const isStartNode = bigInt(node.NODE_ID).compare(bigInt(params.startNode.nodeId)) == 0;
 
-    logger.log('info', `${params.isStable} ${node.PORT} ${node.predecessor.port} ${params.previousNode.port}`);
-
     if (isStartNode) {
         node.send({
             nextNode: params.startNode,

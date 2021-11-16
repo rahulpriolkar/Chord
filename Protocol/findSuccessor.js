@@ -1,6 +1,9 @@
 const bigInt = require('big-integer');
 
-const findSuccessor = function ({ startNode, id, hopCount }) {
+const findSuccessor = function ({ startNode, id, hopCount, messageId }) {
+    // To defer fixFingers until the node has joined
+    if (this.successor === null) return;
+
     id = bigInt(id);
 
     const isLastNode = bigInt(this.NODE_ID).gt(bigInt(this.successor.nodeId));
@@ -15,7 +18,7 @@ const findSuccessor = function ({ startNode, id, hopCount }) {
 
     hopCount++;
     if (successorCondition) {
-        let params = { successor: this.successor, hopCount };
+        let params = { successor: this.successor, hopCount, messageId };
         if (isOnlyNode) this.successor = startNode; // special case, when the 2nd node joins the network
 
         this.send({
@@ -24,8 +27,11 @@ const findSuccessor = function ({ startNode, id, hopCount }) {
             params
         });
     } else {
-        // The line below to be replaced with O(log n) look-up equivalent.
-        const nextNode = this.successor;
+        // O(N)
+        // const nextNode = this.successor;
+
+        // O(log N)
+        const nextNode = this.closestPrecedingNode(id);
 
         this.send({
             nextNode,
@@ -33,7 +39,8 @@ const findSuccessor = function ({ startNode, id, hopCount }) {
             params: {
                 startNode,
                 id,
-                hopCount
+                hopCount,
+                messageId
             }
         });
     }

@@ -1,7 +1,7 @@
 const fixFingersScheduler = (node, time) => {
     setInterval(async () => {
         await node.fixFingers();
-        if (node.PORT == 3000) console.log(node.fingerIndex);
+        // if (node.PORT == 49153) console.log(node.fingerTable);
     }, time * 1000);
 };
 

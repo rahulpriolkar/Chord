@@ -1,5 +1,6 @@
 const predecessorStabilityResponseHandler = function (node, params) {
-    node.ee.emit('predecessor-stability-response', params.isStable);
+    const event = `predecessor-stability-response:${params.messageId}`;
+    node.ee.emit(event, params.isStable);
 };
 
 module.exports = predecessorStabilityResponseHandler;

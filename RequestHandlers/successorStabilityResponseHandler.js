@@ -1,5 +1,6 @@
 const successorStabilityResponseHandler = function (node, params) {
-    node.ee.emit('successor-stability-response', params.isStable, params.hopCount);
+    const event = `successor-stability-response:${params.messageId}`;
+    node.ee.emit(event, params.isStable, params.hopCount);
 };
 
 module.exports = successorStabilityResponseHandler;

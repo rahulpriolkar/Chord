@@ -1,6 +1,6 @@
 const findSuccessorResponseHandler = function (node, params) {
-    node.successor = params.successor;
-    node.ee.emit('find-successor-response');
+    const event = `find-successor-response:${params.messageId}`;
+    node.ee.emit(event, params.successor, params.hopCount);
 };
 
 module.exports = findSuccessorResponseHandler;
