@@ -1,4 +1,4 @@
-# CHORD Peer-To-Peer Protocol
+# CHORD
 
 This project aims to implement the Chord protocol, and offer it as an API for high level software.
 
@@ -22,14 +22,10 @@ is calculated by computing the node hash, modulo 2^m. The output of SHA-1 will b
 when converted to an integer will have a value ranging from 0 to 2^160. This will be the theoretical limit
 for the number of permissible entitities on the network.
 
-< The reason for taking the mod >
-
 The Nodes are arranged in a circular fashion, with each node storing information about its successor
 and predecessor nodes. If N0 is N1's predecessor and N2 is its successor, then, nodeID(N0) < nodeID(N1) < nodeId(N2).
 There is a possibility that two nodes might have the same nodeID, but it is highly unlikely for a
 sufficiently large value of 'm'.
-
-< insert explanation >
 
 The data and nodes are both entities on the network and have undistinguishable nodeIDs. The
 data entities are stored on the node whose nodeID is the successor of the enitity's nodeID.
