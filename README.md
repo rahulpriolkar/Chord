@@ -34,7 +34,9 @@ sufficiently large value of 'm'.
 The data and nodes are both entities on the network and have undistinguishable nodeIDs. The
 data entities are stored on the node whose nodeID is the successor of the enitity's nodeID.
 
-<img src="./assets/images/ChordStructure.jpg" alt="Chord Structure" height="200">
+<p align="center">
+	<img src="./assets/images/ChordStructure.jpg" alt="Chord Structure" height="270">
+</p>
 
 # Routing
 
@@ -62,12 +64,16 @@ is not feasible.
 Each node, along with a successor and a predecessor, also maintains a finger table (or a routing table.
 The entries in the finger table are stored in the following way:
 
-<img src="./assets/images/ChordFingerTable.jpg" alt="Chord Finger Table" height="200">
+<p align="center">
+	<img src="./assets/images/ChordFingerTable.jpg" alt="Chord Finger Table" height="270">
+</p>
 
 This way, each query is not routed to the immediate sucessor, but to the "closest preceding node".
 The finger table is searched and the node with the id closest, but lower than the destination id is selected,
 and the query is forwarded to this node. And this way, the query resolves when the destination node is reached.
 
-<img src="./assets/images/ChordRouting.jpg" alt="Chord Routing" height="200">
+<p align="center">
+	<img src="./assets/images/ChordRouting.jpg" alt="Chord Routing" height="270">
+</p>
 
 It can be proved that, in a N-node network, a query can be resolved, with high probability, by making log(N) network calls.
