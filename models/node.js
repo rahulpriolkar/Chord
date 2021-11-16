@@ -16,7 +16,7 @@ const Node = class {
     constructor(IP_ADDRESS = '127.0.0.1', PORT = 3000) {
         this.IP_ADDRESS = IP_ADDRESS;
         this.PORT = PORT;
-        this.FINGER_TABLE_SIZE = 14;
+        this.FINGER_TABLE_SIZE = 17;
         this.fingerTable = new Array(this.FINGER_TABLE_SIZE);
         this.fingerIndex = 0;
         this.NODE_ID = computeNodeId({ ip: this.IP_ADDRESS, port: this.PORT, m: this.FINGER_TABLE_SIZE });

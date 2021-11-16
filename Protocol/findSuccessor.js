@@ -1,6 +1,9 @@
 const bigInt = require('big-integer');
 
 const findSuccessor = function ({ startNode, id, hopCount, messageId }) {
+    // To defer fixFingers until the node has joined
+    if (this.successor === null) return;
+
     id = bigInt(id);
 
     const isLastNode = bigInt(this.NODE_ID).gt(bigInt(this.successor.nodeId));

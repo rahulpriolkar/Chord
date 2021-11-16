@@ -21,7 +21,9 @@ const join = function ({ ip, port }) {
         });
 
         const event = `find-successor-response:${messageId}`;
-        this.ee.once(event, (successor) => {
+        this.ee.once(event, (successor, hopCount) => {
+            console.log(this.PORT, 'Joined, successor: ', successor.port);
+            console.log(`hop count = ${hopCount}`);
             this.successor = successor;
             resolve();
         });

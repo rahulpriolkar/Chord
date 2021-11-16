@@ -74,11 +74,12 @@ const startServer = function () {
     setInterval(async () => {
         const s = this.successor ? this.successor.port : null;
         const p = this.predecessor ? this.predecessor.port : null;
+        // console.log(this.successor.port, this.fingerTable[0].port);
         console.log(this.PORT, s, p, 'END');
         await this.stabilize();
-    }, 5 * 1000);
+    }, 3 * 1000);
 
-    fixFingersScheduler(this, 3);
+    fixFingersScheduler(this, 10);
 };
 
 module.exports = startServer;
